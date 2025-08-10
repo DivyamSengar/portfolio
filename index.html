@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divyam Sengar | Software Engineer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>DS</text></svg>">
+    <script>
+        // Tailwind CSS configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9', // sky-500
+                        secondary: '#06b6d4', // cyan-500
+                        dark: '#0f172a', // slate-900
+                        mid: '#1e293b', // slate-800
+                        light: '#334155' // slate-700
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'modal-in': 'modalIn 0.3s ease-out'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        modalIn: {
+                            '0%': { opacity: '0', transform: 'translateY(-20px) scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+        
+        .section {
+            min-height: 100vh;
+            padding: 6rem 1.5rem;
+        }
+        
+        /* Navigation link hover effect */
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0ea5e9, #06b6d4);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Project card styles */
+        .project-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(14, 165, 233, 0.1);
+            overflow: hidden;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.2);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+        
+        /* Skill tag styles */
+        .skill-tag {
+            transition: all 0.2s ease;
+        }
+        
+        .skill-tag:hover {
+            transform: scale(1.05);
+            background-color: #0ea5e9;
+            color: #fff;
+        }
+        
+        /* Timeline styles for experience section */
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+            padding-bottom: 2rem;
+            border-left: 2px solid #0ea5e9;
+        }
+        
+        .timeline-item:last-child {
+            border-left: 2px solid transparent;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -11px; /* Adjusted for centering */
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0ea5e9;
+            border: 4px solid #0f172a;
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(90deg, #0ea5e9, #06b6d4);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
+        }
+        
+        /* Scroll animation styles */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Modal styles */
+        #projectModal {
+            transition: opacity 0.3s ease;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section {
+                padding: 4rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-dark bg-opacity-90 backdrop-blur-sm py-4 px-6 border-b border-mid">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Divyam Sengar</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#experience" class="nav-link text-slate-300 hover:text-white">Experience</a>
+                <a href="#projects" class="nav-link text-slate-300 hover:text-white">Projects</a>
+                <a href="#skills" class="nav-link text-slate-300 hover:text-white">Skills</a>
+                <a href="#education" class="nav-link text-slate-300 hover:text-white">Education</a>
+                <a href="#contact" class="nav-link text-slate-300 hover:text-white">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="./Divyam_Sengar_BASE.pdf" target="_blank" class="btn-primary px-4 py-2 rounded-lg font-medium">Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation (Bottom Bar) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-dark border-t border-mid py-3 z-40">
+        <div class="flex justify-around">
+            <a href="#experience" class="flex flex-col items-center text-slate-300 hover:text-white">
+                <i class="fas fa-briefcase"></i>
+                <span class="text-xs mt-1">Experience</span>
+            </a>
+            <a href="#projects" class="flex flex-col items-center text-slate-300 hover:text-white">
+                <i class="fas fa-code"></i>
+                <span class="text-xs mt-1">Projects</span>
+            </a>
+            <a href="#skills" class="flex flex-col items-center text-slate-300 hover:text-white">
+                <i class="fas fa-cogs"></i>
+                <span class="text-xs mt-1">Skills</span>
+            </a>
+            <a href="#education" class="flex flex-col items-center text-slate-300 hover:text-white">
+                <i class="fas fa-graduation-cap"></i>
+                <span class="text-xs mt-1">Education</span>
+            </a>
+            <a href="#contact" class="flex flex-col items-center text-slate-300 hover:text-white">
+                <i class="fas fa-envelope"></i>
+                <span class="text-xs mt-1">Contact</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Home Section -->
+    <section id="home" class="section flex items-center justify-center relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full z-0">
+            <div class="absolute top-20 left-10 w-64 h-64 rounded-full bg-primary opacity-10 blur-3xl animate-float"></div>
+            <div class="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-secondary opacity-10 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto z-10 px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-on-scroll">
+                    <h4 class="text-primary font-medium mb-2">Hello, I'm</h4>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-4">Divyam Sengar</h1>
+                    <h2 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">Software Engineer | AI & Systems</h2>
+                    <p class="text-lg text-slate-300 mb-8 max-w-2xl">M.S. in Computer Science at UC San Diego with a passion for developing impactful software, from large-scale language models at DataAnnotation to automation solutions at Amazon Web Services. Seeking innovative opportunities in software engineering and machine learning.</p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#projects" class="btn-primary px-6 py-3 rounded-lg font-medium text-lg">View Projects</a>
+                        <a href="./Divyam_Sengar_BASE.pdf" target="_blank" class="px-6 py-3 rounded-lg font-medium text-lg border border-primary text-primary hover:bg-primary hover:bg-opacity-10">Download Resume</a>
+                    </div>
+                    
+                    <div class="mt-10 flex items-center space-x-6">
+                        <a href="https://linkedin.com/in/Divyam-Sengar" target="_blank" aria-label="LinkedIn Profile" class="w-12 h-12 rounded-full bg-mid flex items-center justify-center hover:bg-primary transition-all">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="https://github.com/DivyamSengar" target="_blank" aria-label="GitHub Profile" class="w-12 h-12 rounded-full bg-mid flex items-center justify-center hover:bg-primary transition-all">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="mailto:divyamsengar@gmail.com" aria-label="Email" class="w-12 h-12 rounded-full bg-mid flex items-center justify-center hover:bg-primary transition-all">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="animate-on-scroll flex justify-center lg:justify-end" style="transition-delay: 0.2s;">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80">
+                        <img src="https://placehold.co/400x400/1e293b/f1f5f9?text=DS" alt="Divyam Sengar Profile Picture" class="rounded-full border-4 border-primary/20 object-cover w-full h-full">
+                        <div class="absolute -bottom-4 -right-4 bg-mid px-6 py-3 rounded-lg shadow-lg">
+                            <p class="font-bold text-primary">Open to Opportunities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section bg-mid">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold mb-4">Professional <span class="text-primary">Experience</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="relative">
+                <!-- Experience Item 1 -->
+                <div class="timeline-item animate-on-scroll">
+                    <div class="bg-dark p-6 rounded-xl shadow-lg">
+                        <div class="flex flex-wrap justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Software Development Engineer Intern</h3>
+                                <p class="text-primary font-medium">Amazon Web Services</p>
+                            </div>
+                            <div class="text-slate-400 mt-2 md:mt-0 text-right">
+                                <p>Bellevue, WA | Jun 2025 - Sep 2025</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 mt-4 text-slate-300">
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Developing and integrating an automation chatbot for the AWS OpenSearch Release Optimization Team.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Customizing Chatbot NLP Architecture, configuring MCP Servers for real-time data streaming, and implementing custom OpenSearch VectorDB based RAG Architecture.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Writing Infrastructure as Code (IaC) for AWS components for one-click deployment and CI/CD updates.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Configuring agent-to-agent (a2a) protocol to communicate between workflow automation agents and chatbot.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Experience Item 2 -->
+                <div class="timeline-item animate-on-scroll">
+                    <div class="bg-dark p-6 rounded-xl shadow-lg">
+                        <div class="flex flex-wrap justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Software Engineer Intern</h3>
+                                <p class="text-primary font-medium">DataAnnotation</p>
+                            </div>
+                            <div class="text-slate-400 mt-2 md:mt-0 text-right">
+                                <p>Remote | Jun 2024 - Sep 2024</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 mt-4 text-slate-300">
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Optimized AI chatbot performance by designing and implementing fine-tuning strategies for transformer-based models.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Engineered and validated training pipelines for large language models, focusing on generating diverse and challenging coding problems.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Conducted in-depth analysis of model architecture, identifying key bottlenecks and implementing data-driven optimization techniques.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Experience Item 3 -->
+                <div class="timeline-item animate-on-scroll">
+                    <div class="bg-dark p-6 rounded-xl shadow-lg">
+                        <div class="flex flex-wrap justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Instructional Assistant</h3>
+                                <p class="text-primary font-medium">UC San Diego CSE</p>
+                            </div>
+                            <div class="text-slate-400 mt-2 md:mt-0 text-right">
+                                <p>San Diego, CA | Sep 2023 - Present</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 mt-4 text-slate-300">
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Mentored 500+ student classes for Python Programming, Advanced Data Structures, Computer Organization, and Deep Learning.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Conducted tutoring over 20+ weekly office hours, clarifying concepts and bolstering student coding proficiency.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Produced homework, exams, and dynamic question generators, improving assessment of student comprehension.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Experience Item 4 -->
+                <div class="timeline-item animate-on-scroll">
+                    <div class="bg-dark p-6 rounded-xl shadow-lg">
+                        <div class="flex flex-wrap justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold">Full Stack Developer Intern</h3>
+                                <p class="text-primary font-medium">CSES @ UCSD</p>
+                            </div>
+                            <div class="text-slate-400 mt-2 md:mt-0 text-right">
+                                <p>San Diego, CA | Jun 2023 - Sep 2023</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 mt-4 text-slate-300">
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Developed a dynamic membership platform website using React.js and Node.js, increasing membership engagement by 50%.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i><span>Implemented the backend with Express.js and MongoDB to efficiently store and manage user & event data.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold mb-4">Featured <span class="text-primary">Projects</span></h2>
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto">A selection of projects showcasing my technical skills and problem-solving abilities.</p>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mt-4"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projects will be dynamically inserted here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section bg-mid">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold mb-4">Technical <span class="text-primary">Skills</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mt-4"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Languages -->
+                <div class="animate-on-scroll bg-dark rounded-xl p-6">
+                    <div class="flex items-center mb-6"><div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center mr-4"><i class="fas fa-code text-xl"></i></div><h3 class="text-xl font-bold">Languages</h3></div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Java</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Python</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">C++</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Go</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">C</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">SQL</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">JavaScript</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">HTML/CSS</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">R</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">MATLAB</span>
+                    </div>
+                </div>
+                
+                <!-- AI & ML -->
+                <div class="animate-on-scroll bg-dark rounded-xl p-6">
+                    <div class="flex items-center mb-6"><div class="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mr-4"><i class="fas fa-brain text-xl"></i></div><h3 class="text-xl font-bold">AI & Machine Learning</h3></div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">PyTorch</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">TensorFlow</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">scikit-learn</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Pandas</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Numpy</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">SciPy</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Transformers</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">RAG</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">VectorDB</span>
+                    </div>
+                </div>
+                
+                <!-- Tools & Platforms -->
+                <div class="animate-on-scroll bg-dark rounded-xl p-6">
+                    <div class="flex items-center mb-6"><div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center mr-4"><i class="fas fa-tools text-xl"></i></div><h3 class="text-xl font-bold">Developer Tools & Platforms</h3></div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Git</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Docker</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Kubernetes</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">AWS</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">GCP</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">gRPC</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">JUNIT</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Valgrind</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">GDB</span><span class="skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg">Github Actions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold mb-4">Education & <span class="text-primary">Coursework</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mt-4"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                <div class="lg:col-span-2 animate-on-scroll">
+                    <div class="bg-mid rounded-xl p-8 h-full">
+                        <div class="flex items-start mb-6">
+                            <div class="w-16 h-16 rounded-xl bg-primary shrink-0 flex items-center justify-center mr-6"><i class="fas fa-university text-2xl"></i></div>
+                            <div>
+                                <h3 class="text-xl font-bold">Master of Science in Computer Science</h3>
+                                <p class="text-primary font-medium">University of California, San Diego</p>
+                                <p class="text-slate-400">Jan 2025 - Mar 2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start mt-8">
+                            <div class="w-16 h-16 rounded-xl bg-secondary shrink-0 flex items-center justify-center mr-6"><i class="fas fa-graduation-cap text-2xl"></i></div>
+                            <div>
+                                <h3 class="text-xl font-bold">Bachelor of Science in Computer Science</h3>
+                                <p class="text-primary font-medium">University of California, San Diego</p>
+                                <p class="text-slate-400">Sep 2022 - Mar 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-3 animate-on-scroll">
+                    <div class="bg-mid rounded-xl p-8 h-full">
+                        <h3 class="text-2xl font-bold mb-6">Relevant Coursework</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <!-- Coursework will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-mid">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16 animate-on-scroll">
+                <h2 class="text-4xl font-bold mb-4">Get In <span class="text-primary">Touch</span></h2>
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto">I'm actively seeking new opportunities and collaborations. Feel free to reach out!</p>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mt-4"></div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-dark rounded-xl p-8 animate-on-scroll">
+                <div class="flex flex-wrap justify-center gap-8 text-center">
+                    <div class="flex-1 min-w-[200px]">
+                        <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-4"><i class="fas fa-envelope text-2xl"></i></div>
+                        <h4 class="font-bold text-lg">Email</h4>
+                        <a href="mailto:divyamsengar@gmail.com" class="text-slate-300 hover:text-primary transition-colors">divyamsengar@gmail.com</a>
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <div class="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4"><i class="fab fa-linkedin-in text-2xl"></i></div>
+                        <h4 class="font-bold text-lg">LinkedIn</h4>
+                        <a href="https://linkedin.com/in/Divyam-Sengar" target="_blank" class="text-slate-300 hover:text-primary transition-colors">linkedin.com/in/Divyam-Sengar</a>
+                    </div>
+                     <div class="flex-1 min-w-[200px]">
+                        <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-4"><i class="fab fa-github text-2xl"></i></div>
+                        <h4 class="font-bold text-lg">GitHub</h4>
+                        <a href="https://github.com/DivyamSengar" target="_blank" class="text-slate-300 hover:text-primary transition-colors">github.com/DivyamSengar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark border-t border-mid py-10">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500">
+            <p>&copy; <span id="currentYear"></span> Divyam Sengar. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" aria-label="Back to top" class="fixed bottom-20 md:bottom-6 right-6 w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg opacity-0 invisible transition-all z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Project Details Modal -->
+    <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-[100] opacity-0 invisible" role="dialog" aria-modal="true">
+        <div id="modalContent" class="bg-dark rounded-xl p-8 max-w-2xl w-full animate-modal-in shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button id="closeModal" class="absolute top-4 right-4 text-slate-400 hover:text-white" aria-label="Close modal">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <h3 id="modalTitle" class="text-3xl font-bold mb-4 text-primary"></h3>
+            <div id="modalTags" class="flex flex-wrap gap-2 mb-6"></div>
+            <div id="modalDescription" class="text-slate-300 space-y-3"></div>
+            <div id="modalLinks" class="mt-6"></div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- DATA ---
+        const projects = [
+            {
+                title: "Privacy Impact Indicator",
+                icon: "fa-user-secret",
+                description: "Designed and developed a Chrome MV3 extension that visualizes real-time web tracking risk using an exponential privacy scoring model. Conducted a 15-participant study, reducing tracker contact by 32%. Also built a Selenium-Scrapy web crawler to audit cookie practices on major AI platforms.",
+                tags: ["Chrome Extension", "JavaScript", "Selenium", "Scrapy", "Privacy"],
+                details: [
+                    "Engineered a system integrating service workers, ring-buffered telemetry, and peripheral UI feedback to nudge users away from tracker-heavy sites.",
+                    "Conducted a within-subjects study that reduced tracker contact by 32% and third-party requests by 14%.",
+                    "Built a Selenium-Scrapy web crawler to audit cookie practices on major AI platforms, analyzing SameSite, Secure, and HttpOnly attributes over 157 cookies.",
+                    "Discovered widespread use of long-lived first-party cookies (avg. 293 days) and incomplete security flag adoption."
+                ],
+                github: "https://github.com/DivyamSengar/Privacy-Impact-Indicator"
+            },
+            {
+                title: "Welp",
+                icon: "fa-utensils",
+                description: "Built a Yelp-like microservices platform with scalable services using Golang and gRPC, deployed via Docker/Kubernetes with automated CI/CD pipelines.",
+                tags: ["Go", "Python", "Docker", "Kubernetes", "GCP", "gRPC", "Microservices"],
+                details: [
+                    "Designed latency-throughput analysis, identifying frontend bottlenecks and improving max throughput by 4.2x via Kubernetes pod scaling.",
+                    "Integrated LRU/LFU caching policies to reduce storage-layer access latency by 85% under Zipfian workloads.",
+                    "Achieved sub-10ms cache-hit response times.",
+                    "Engineered a C-based thread-scheduling benchmark to optimize cache locality and reduce cross-core memory latency."
+                ],
+                github: "https://github.com/DivyamSengar/Welp"
+            },
+            {
+                title: "QuoteGuard",
+                icon: "fa-quote-right",
+                description: "Developed a custom transformer-classifier to verify speakers of political quotes & speeches, achieving 96.2% accuracy.",
+                tags: ["Python", "PyTorch", "NLP", "Transformers"],
+                details: [
+                    "Achieved 96.2% accuracy by leveraging custom sparse attention mechanisms and positional embeddings.",
+                    "Optimized accuracy via regularization, cross-validation, and varying the feed forward layer normalization functions."
+                ],
+                 github: "https://github.com/DivyamSengar/QuoteGuard"
+            },
+            {
+                title: "Successorator",
+                icon: "fa-tasks",
+                description: "Designed and implemented a multifaceted to-do list Android app using Java, with recurrent tasks, focus mode, categories, and calendar synchronization.",
+                tags: ["Java", "SQL", "Android", "RoomDatabase", "Git", "Github Actions"],
+                details: [
+                    "Used SQL & RoomDatabase to implement persistent features, speedy data retrieval, and enable task rollover logic.",
+                    "Customized MVP architecture to streamline app workflows, ensuring intuitive and fast user input.",
+                    "Built a robust Github Actions test suite, ensuring proper merge protection and automated testing."
+                ],
+                github: "https://github.com/DivyamSengar/Successorator"
+            },
+            {
+                title: "Diabetes Prediction",
+                icon: "fa-heartbeat",
+                description: "Co-developed a diabetes prediction model using physiological and demographic data, achieving 96.3% accuracy.",
+                tags: ["Python", "scikit-learn", "Pandas", "Machine Learning"],
+                details: [
+                    "Implemented and optimized SVM, XGBoost, Logistic Regression, and Random Forest Classifier models.",
+                    "Optimized model performance via hyperparameter tuning and cross-validation techniques to reduce overfitting.",
+                    "Decimated false positives via data augmentation to engineer cross-validation datasets."
+                ],
+                github: "https://github.com/DivyamSengar/Diabetes-Prediction"
+            },
+            {
+                title: "Data Compressor",
+                icon: "fa-file-archive",
+                description: "Developed a custom Huffman file compression & decompression tool in C++ for efficient, lossless data compression, reducing file size by 60% on average.",
+                tags: ["C++", "Algorithms", "Data Structures"],
+                details: [
+                    "Minimized compression overhead and optimized compression speed by utilizing custom data structures.",
+                    "Reduced file size by 60% on average by applying a frequency-based encoding approach."
+                ],
+                github: "https://github.com/DivyamSengar/Data-Compressor"
+            },
+            {
+                title: "Thread Affinity Analyzer",
+                icon: "fa-microchip",
+                description: "Developed a C-based benchmarking utility to analyze the performance of multithreaded concurrency primitives under different CPU scheduling scenarios.",
+                tags: ["C", "Linux", "Bash", "Performance"],
+                details: [
+                    "Engineered a test suite to quantify the impact of thread-to-core affinity on shared memory access, measuring bottlenecks through cache-miss rates and CPU cycle analysis.",
+                    "Demonstrated deep understanding of OS fundamentals by programmatically manipulating thread affinity with Linux system calls (pthread_setaffinity_np).",
+                    "Validated that co-locating threads on the same core significantly improves cache locality and reduces memory access latency."
+                ],
+                github: "https://github.com/DivyamSengar/Thread-Affinity-Analyzer"
+            }
+        ];
+
+        const courses = [
+            "Advanced Data Structures", "Algorithm Design & Analysis", "Computability & Complexity", "Computer Architecture", "Computer Networks", "Computer Security", "Convex Optimization", "Data Center Systems", "Deep Learning", "Digital Systems", "Discrete & Continuous Optimization", "Human-AI Interaction", "Modern Cryptography", "Numerical Analysis", "Numerical Linear Algebra", "Object Oriented Development", "Operating Systems", "Parallel Computing", "Programming Languages", "Quantum Complexity & Cryptography", "Quantum Computing", "Recommender Systems & Web Mining", "Software Engineering", "Statistical NLP", "Theory of Computation", "Machine Learning with Music", "Probabilistic AI", "CyberSecurity & Privacy"
+        ];
+
+        // --- DYNAMIC CONTENT INJECTION ---
+        const projectsContainer = document.querySelector('#projects .grid');
+        projects.forEach((project, index) => {
+            const card = document.createElement('div');
+            card.className = 'project-card rounded-xl p-6 animate-on-scroll flex flex-col';
+            card.innerHTML = `
+                <div class="flex-grow">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold">${project.title}</h3>
+                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+                            <i class="fas ${project.icon}"></i>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 mb-4">${project.description}</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        ${project.tags.map(tag => `<span class="skill-tag bg-dark text-xs px-3 py-1 rounded-full">${tag}</span>`).join('')}
+                    </div>
+                </div>
+                <button data-index="${index}" class="view-details-btn text-primary font-medium flex items-center group mt-auto">
+                    View Details
+                    <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            `;
+            projectsContainer.appendChild(card);
+        });
+
+        const courseworkContainer = document.querySelector('#education .flex-wrap');
+        courses.forEach(course => {
+            const courseEl = document.createElement('span');
+            courseEl.className = 'skill-tag bg-light/50 text-slate-200 px-3 py-1 rounded-lg text-sm';
+            courseEl.textContent = course;
+            courseworkContainer.appendChild(courseEl);
+        });
+
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // --- MODAL LOGIC ---
+        const modal = document.getElementById('projectModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModalBtn = document.getElementById('closeModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalTags = document.getElementById('modalTags');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalLinks = document.getElementById('modalLinks');
+
+        document.querySelectorAll('.view-details-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const project = projects[button.dataset.index];
+                modalTitle.textContent = project.title;
+                modalTags.innerHTML = project.tags.map(tag => `<span class="skill-tag bg-dark text-xs px-3 py-1 rounded-full">${tag}</span>`).join('');
+                modalDescription.innerHTML = project.details.map(detail => `<p class="flex items-start"><i class="fas fa-check-circle text-primary mt-1 mr-3 shrink-0"></i><span>${detail}</span></p>`).join('');
+                modalLinks.innerHTML = `
+                    ${project.github ? `<a href="${project.github}" target="_blank" class="btn-primary inline-flex items-center px-4 py-2 rounded-lg font-medium"><i class="fab fa-github mr-2"></i>View on GitHub</a>` : ''}
+                `;
+                modal.classList.remove('opacity-0', 'invisible');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+        });
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+
+
+        // --- SCROLL-BASED ANIMATIONS & INTERACTIONS ---
+        // Animate on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+        
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0 }));
+        
+        // Smooth scrolling for navigation links & active link highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        function updateActiveLink() {
+            let index = sections.length;
+            while(--index && window.scrollY + 100 < sections[index].offsetTop) {}
+            
+            navLinks.forEach((link) => link.classList.remove('active'));
+            if(navLinks[index]) {
+                navLinks[index].classList.add('active');
+            }
+        }
+
+        window.addEventListener('scroll', updateActiveLink);
+        updateActiveLink(); // Set active link on page load
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80, // Offset for fixed nav
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
