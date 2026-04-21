@@ -669,6 +669,18 @@
 
         const projects = [
             {
+                title: "SpecSplit",
+                icon: "fa-network-wired",
+                description: "Network-disaggregated speculative decoding engine decoupling draft and target LLMs across GPU tiers.",
+                tags: ["Python", "gRPC", "Distributed Systems", "LLMs"],
+                details: [
+                    "Architected a network-disaggregated speculative decoding engine from scratch, decoupling draft and target LLMs (up to 70B parameters) across separate GPU tiers via a custom gRPC transport layer.",
+                    "Engineered an asynchronous orchestration pipeline to concurrently generate draft trees and verify tokens, successfully masking network round-trip latency and achieving up to a 57.7% speculation hit rate.",
+                    "Implemented custom KV cache synchronization and deterministic inference loops, benchmarking performance across 62 tasks to demonstrate a 47% reduction in theoretical hardware provisioning costs."
+                ],
+                github: "https://github.com/SamvritSrinath/SpecSplit"
+            },
+            {
                 title: "Privacy Impact Indicator",
                 icon: "fa-user-secret",
                 description: "Chrome MV3 extension visualizing real-time tracking risk. Conducted a study reducing tracker contact by 32%.",
